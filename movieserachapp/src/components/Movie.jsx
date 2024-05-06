@@ -1,10 +1,10 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Movie = () => {
   const [search, setSearch] = useState("");
   const [data, setData] = useState([]);
-
+  
   const fetchData = async () => {
     try {
       const response = await axios.get(`http://www.omdbapi.com/?s=${search}&apikey=413c00fd`);
@@ -23,20 +23,35 @@ const Movie = () => {
   }, [search]);
 
   return (
-    <div className='w-full h-auto text-center bg-zinc-700 py-2'>
-      <h1 className='text-white text-4xl'>Movie Search App</h1>
-      <input type="text"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder='Search movie'
-        className='w-96 mx-auto my-10 py-1 border px-2 border-black sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5' />
-      <button onClick={fetchData} className='bg-red-500 px-8 py-1 text-white font-bold'>Search</button>
-      <div className="mt-5 flex flex-wrap justify-center text-white">
+    <div className={`text-center h-auto py-8 bg-gray-900 ${data.length === 0 ? 'h-full' : ''}`}>
+      <h1 className='text-white text-4xl font-semibold mb-8'>Discover Movies</h1>
+      <div className="flex justify-center">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder='Search movie'
+          className='w-80 sm:w-96 px-4 py-2 rounded-lg border border-gray-600 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-red-500'
+        />
+        <button
+          onClick={fetchData}
+          className='ml-4 bg-red-500 px-6 py-2 text-white font-bold rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 hover:bg-red-600 transition duration-300 ease-in-out transform hover:scale-110'
+        >
+          Search
+        </button>
+      </div>
+      <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {data.map(movie => (
-          <div className='w-[45%] sm:w-[30%] md:w-[25%] lg:w-[20%] xl:w-[15%] my-5 mx-2 px-2 shadow-2xl' key={movie.imdbID}>
+          <div
+            key={movie.imdbID}
+            className='bg-gray-800 rounded-lg overflow-hidden shadow-lg cursor-pointer'
+            onClick={() => openYouTubePage()}
+          >
             <img src={movie.Poster} alt={movie.Title} className='h-64 w-full object-cover' />
-            <h2 className="text-xl mt-2">{movie.Title}</h2>
-            <p>Year: {movie.Year}</p>
+            <div className='p-4'>
+              <h2 className="text-xl font-semibold mb-2 text-white cursor-pointer hover:text-red-500">{movie.Title}</h2>
+              <p className="text-gray-400">Year: {movie.Year}</p>
+            </div>
           </div>
         ))}
       </div>

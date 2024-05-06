@@ -3,7 +3,7 @@ import Movie from './components/Movie'
 
 const App = () => {
   return (
-    <div className='bg-zinc-700 w-full h-screen'>
+    <div className='bg-gray-900 h-[100vh]'>
       <Movie/>
     </div>
   )
